@@ -9,8 +9,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.1-characters-integrated">
-    <meta name="last-updated" content="2024-12-19">
+    <meta name="version" content="2.2-fantasy-names">
+    <meta name="last-updated" content="2024-12-20">
     
     <!-- Google Fonts - Space Grotesk Geometric Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1649,10 +1649,12 @@
                 this.playerName = '';
                 
                 // Character themes based on persona combinations (mapped to PRD character images)
+                console.log('🎭 Loading character themes with fantasy names...');
                 this.characterThemes = {
                     // PRD 8.2 → character2.png
                     'tactician-lucky-jumper': {
                         name: 'Tactician + Lucky + Jumper',
+                        fantasyName: 'Magical Nurse',
                         image: 'Assets/character2.png',
                         colors: {
                             primary: '#22c55e',
@@ -1666,6 +1668,7 @@
                     // PRD 8.3 → character3.png
                     'tactician-persistent-sprinter': {
                         name: 'Tactician + Persistent + Sprinter',
+                        fantasyName: 'Dream Princess',
                         image: 'Assets/character3.png',
                         colors: {
                             primary: '#7c3aed',
@@ -1679,6 +1682,7 @@
                     // PRD 8.6 → character6.png
                     'daredevil-lucky-jumper': {
                         name: 'Daredevil + Lucky + Jumper',
+                        fantasyName: 'Golden Angel',
                         image: 'Assets/character6.png',
                         colors: {
                             primary: '#9333ea',
@@ -1692,6 +1696,7 @@
                     // PRD 8.1 → character1.png
                     'tactician-lucky-sprinter': {
                         name: 'Tactician + Lucky + Sprinter',
+                        fantasyName: 'Glitter Witch',
                         image: 'Assets/character1.png',
                         colors: {
                             primary: '#0891b2',
@@ -1705,6 +1710,7 @@
                     // PRD 8.8 → character8.png
                     'daredevil-persistent-jumper': {
                         name: 'Daredevil + Persistent + Jumper',
+                        fantasyName: 'Stoic Night',
                         image: 'Assets/character8.png',
                         colors: {
                             primary: '#eab308',
@@ -1718,6 +1724,7 @@
                     // PRD 8.4 → character4.png
                     'tactician-persistent-jumper': {
                         name: 'Tactician + Persistent + Jumper',
+                        fantasyName: 'Rainbow Star',
                         image: 'Assets/character4.png',
                         colors: {
                             primary: '#f97316',
@@ -1731,6 +1738,7 @@
                     // PRD 8.5 → character5.png
                     'daredevil-lucky-sprinter': {
                         name: 'Daredevil + Lucky + Sprinter',
+                        fantasyName: 'Mystical Fairy',
                         image: 'Assets/character5.png',
                         colors: {
                             primary: '#16a34a',
@@ -1744,6 +1752,7 @@
                     // PRD 8.7 → character7.png
                     'daredevil-persistent-sprinter': {
                         name: 'Daredevil + Persistent + Sprinter',
+                        fantasyName: 'Twilight Lizard',
                         image: 'Assets/character7.png',
                         colors: {
                             primary: '#0d9488',
@@ -2008,6 +2017,19 @@
             }
             
             getPersonaDescription() {
+                // Create combination key
+                const combo = `${this.personas.personality}-${this.personas.playstyle}-${this.personas.movement}`;
+                console.log('🎭 Getting persona description for combo:', combo);
+                
+                // Return fantasy name if it exists
+                if (this.characterThemes[combo] && this.characterThemes[combo].fantasyName) {
+                    const fantasyName = this.characterThemes[combo].fantasyName;
+                    console.log('✨ Found fantasy name:', fantasyName);
+                    return fantasyName;
+                }
+                
+                console.log('⚠️ No fantasy name found, using fallback');
+                // Fallback to technical names if no fantasy name found
                 const names = {
                     tactician: 'Tactician',
                     daredevil: 'Daredevil', 
@@ -3012,17 +3034,35 @@
             
             updatePersonaDisplay() {
                 const display = document.getElementById('personaDisplay');
-                const traits = {
-                    personality: { tactician: 'Tactician', daredevil: 'Daredevil' },
-                    playstyle: { lucky: 'Lucky', persistent: 'Persistent' },
-                    movement: { sprinter: 'Sprinter', jumper: 'Jumper' }
-                };
                 
-                display.innerHTML = Object.entries(this.personas).map(([type, value]) => `
-                    <div class="persona-trait">
-                        <span class="trait-name">${traits[type][value]}</span>
-                    </div>
-                `).join('');
+                // Create combination key to get fantasy name
+                const combo = `${this.personas.personality}-${this.personas.playstyle}-${this.personas.movement}`;
+                
+                // Check if we have a complete persona selection
+                if (this.personas.personality && this.personas.playstyle && this.personas.movement) {
+                    const fantasyName = this.characterThemes[combo]?.fantasyName || this.getPersonaDescription();
+                    
+                    display.innerHTML = `
+                        <div class="persona-trait" style="text-align: center;">
+                            <span class="trait-name" style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color);">${fantasyName}</span>
+                        </div>
+                    `;
+                } else {
+                    // Show individual traits if not all selected yet
+                    const traits = {
+                        personality: { tactician: 'Tactician', daredevil: 'Daredevil' },
+                        playstyle: { lucky: 'Lucky', persistent: 'Persistent' },
+                        movement: { sprinter: 'Sprinter', jumper: 'Jumper' }
+                    };
+                    
+                    display.innerHTML = Object.entries(this.personas)
+                        .filter(([type, value]) => value !== null)
+                        .map(([type, value]) => `
+                            <div class="persona-trait">
+                                <span class="trait-name">${traits[type][value]}</span>
+                            </div>
+                        `).join('') || '<div style="text-align: center; color: #6b7280;">Select your traits</div>';
+                }
             }
             
             updateDebuffsDisplay() {
@@ -9517,8 +9557,25 @@
                 const playstyle = persona.playstyle || 'Unknown';
                 const movement = persona.movement || 'Unknown';
                 
+                // Fantasy name mapping
+                const fantasyNameMap = {
+                    'tactician-lucky-jumper': 'Magical Nurse',
+                    'tactician-lucky-sprinter': 'Glitter Witch',
+                    'tactician-persistent-jumper': 'Rainbow Star',
+                    'tactician-persistent-sprinter': 'Dream Princess',
+                    'daredevil-lucky-jumper': 'Golden Angel',
+                    'daredevil-lucky-sprinter': 'Mystical Fairy',
+                    'daredevil-persistent-jumper': 'Stoic Night',
+                    'daredevil-persistent-sprinter': 'Twilight Lizard'
+                };
+                
+                // Create combination key
+                const combo = `${personality}-${playstyle}-${movement}`;
+                const fantasyName = fantasyNameMap[combo];
+                
                 return {
-                    full: `${personality}/${playstyle}/${movement}`,
+                    full: fantasyName || `${personality}/${playstyle}/${movement}`,
+                    fantasy: fantasyName,
                     personality: personality.charAt(0).toUpperCase() + personality.slice(1),
                     playstyle: playstyle.charAt(0).toUpperCase() + playstyle.slice(1),
                     movement: movement.charAt(0).toUpperCase() + movement.slice(1)
@@ -9640,8 +9697,8 @@
                             <td style="padding: 0.75rem; font-weight: bold; color: var(--primary-color); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${score.playerName || 'Anonymous'}">${score.playerName || 'Anonymous'}</td>
                             <td style="padding: 0.75rem; font-weight: bold; color: var(--success-color);">${score.score.toLocaleString()}</td>
                             <td style="padding: 0.75rem;">
-                                <div style="font-weight: 600; font-size: 0.9rem;">${persona.personality}</div>
-                                <div style="font-size: 0.75rem; color: #6b7280;">${persona.playstyle} • ${persona.movement}</div>
+                                <div style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color);">${persona.full}</div>
+                                ${persona.fantasy ? '<div style="font-size: 0.75rem; color: #6b7280;">Fantasy Character</div>' : `<div style="font-size: 0.75rem; color: #6b7280;">${persona.playstyle} • ${persona.movement}</div>`}
                             </td>
                             <td style="padding: 0.75rem; text-align: center; font-family: monospace; font-size: 0.9rem;">${scoreSystem.formatTime(score.time)}</td>
                             <td style="padding: 0.75rem; text-align: center; font-size: 0.9rem;">${score.turns}</td>
