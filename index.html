@@ -6149,7 +6149,7 @@
                 
                 document.getElementById('modalTitle').textContent = '🎈 Balloon Burst Challenge';
                 document.getElementById('modalContent').innerHTML = `
-                    <div style="text-align: center; padding: 1rem; height: 650px; position: relative; overflow: hidden;">
+                    <div style="text-align: center; padding: 1rem; max-height: 650px; position: relative; overflow-y: auto; overflow-x: hidden;">
                         <div style="font-size: 1.1rem; margin-bottom: 1rem;">
                             Pop balloons with <strong>SPACEBAR</strong> in 7 seconds!<br>
                             <span style="color: #22c55e; font-weight: bold;">Normal balloons: +2 points each</span><br>
@@ -6200,6 +6200,7 @@
                             margin-top: 1rem;
                             font-weight: bold;
                             min-height: 2rem;
+                            padding-bottom: 2rem;
                         "></div>
                     </div>
                 `;
@@ -6530,24 +6531,37 @@
                 
                 // Show continue button after delay
                 setTimeout(() => {
-                    document.getElementById('balloonResults').innerHTML += `
-                        <br><br>
-                        <button id="balloonContinueBtn" style="
-                            background: var(--primary-color);
-                            color: white;
-                            border: none;
-                            padding: 0.75rem 1.5rem;
-                            border-radius: 8px;
-                            font-size: 1rem;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: background 0.3s ease;
-                        ">Continue</button>
+                    const resultsDiv = document.getElementById('balloonResults');
+                    resultsDiv.innerHTML += `
+                        <div style="margin: 2rem 0; text-align: center;">
+                            <button id="balloonContinueBtn" style="
+                                background: var(--primary-color);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 8px;
+                                font-size: 1.1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+                                display: inline-block;
+                                min-width: 150px;
+                            " onmouseover="this.style.background='var(--secondary-color)'; this.style.transform='translateY(-2px)'" 
+                               onmouseout="this.style.background='var(--primary-color)'; this.style.transform='translateY(0)'">
+                                🎮 Continue Game
+                            </button>
+                        </div>
                     `;
                     
+                    // Auto-scroll to button to ensure visibility
                     const continueBtn = document.getElementById('balloonContinueBtn');
                     if (continueBtn) {
+                        continueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        continueBtn.focus();
+                        
                         continueBtn.onclick = () => {
+                            console.log('🎈 Balloon Burst continue button clicked');
                             hideModal('squareModal');
                             if (this.pendingModalCallback) {
                                 this.pendingModalCallback();
