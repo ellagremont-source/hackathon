@@ -1,0 +1,36 @@
+🎮 **BUILD BOARDBREAKER GAME - EXPERT LEVEL PROMPT**
+
+I need you to create "Boardbreaker" - a sophisticated web-based board game. Build it as a complete, bug-free HTML file with embedded CSS/JavaScript.
+
+**CORE GAME:**
+- 7×7 snaking board game (squares 1→49)
+- 8 persona combinations affect board generation (Tactician/Daredevil + Lucky/Persistent + Sprinter/Jumper)
+- Complex square types: Safe, Animation, Movement Modifiers, Battles, Random Events, Persona-specific
+- Win: Reach square 49. Lose: Trigger persona-specific death (e.g., Sprinter overshoots 3x, Daredevil hits 3 traps in row)
+- Scoring: Completion time + mini-game wins + "strength score"
+
+**TECHNICAL REQUIREMENTS:**
+- Clean modular architecture (GameEngine, BoardGenerator, PersonaSystem, SquareSystem, AnimationEngine)
+- Robust state management with proper error handling
+- 8 different board generation algorithms based on persona traits
+- Smooth animations (60fps) with intuitive UI
+- Local storage for leaderboards and saves
+- Mobile-responsive design
+
+**IMPLEMENTATION PRIORITY:**
+1. Core board system with persona-based generation
+2. Dice rolling, movement, and basic square resolution
+3. All square types with their specific behaviors
+4. Mini-games: Tap Race, Quick Aim, Memory Match, Dodge Drop
+5. Debuff system (Slow Roll, Slippery Grip, Fogged Vision, etc.)
+6. Animation polish and scoring system
+
+**CODE QUALITY:**
+- Professional game architecture that's easily extensible
+- Handle all edge cases and validate board generation
+- Consistent naming, proper commenting, clean structure
+- Performance-optimized with smooth user experience
+
+**DELIVERABLE:** Single HTML file with complete playable game, beautiful UI, all features working, ready to deploy.
+
+Start with the core architecture and board generation - that's the most complex part. Build systematically and test thoroughly. Make it awesome! 🚀
